@@ -35,6 +35,7 @@ def get_web():
     return result
 
 def search(quantity_sites):
+    parser(0)
     for x in range(get_web()):
         quantity_sites = quantity_sites + 20
         parser(quantity_sites)

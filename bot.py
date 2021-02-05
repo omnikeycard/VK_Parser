@@ -1,3 +1,5 @@
+# Функциональная часть бота #
+
 from bs4 import BeautifulSoup
 import requests
 
@@ -6,15 +8,14 @@ with open('log.txt', 'w') as f:
 
 forms_list = []
 authors_list = []
-current_web = 0
+current_web = 0 
 
 def get_web(): # получение кол-ва страниц у обсуждения 
     content = requests.get('https://vk.com/topic-201145305_46761521').text
     soup = BeautifulSoup(content, "html.parser")
     result = soup.findAll('a', class_="pg_link")
     result = result[-1].get('href')
-    result = int(result[result.index('offset=')+7:]) // 20
-    return result
+    return int(result[result.index('offset=')+7:]) // 20 # получение параметра offset из URL последней страницы и деление его на 20 => возвращение количества страниц
 
 webs = get_web()
 
@@ -31,25 +32,27 @@ def parser(quantity_sites):
 
     for z in range(len(authors_list)): # Основной цикл вывода данных на экран
         output = f'{authors_list[z]} - {forms_list[z]}\n'
-        f = open('log.txt', 'a', encoding='utf-8')
-        f.write(f'{output}\n')
-        f.close()
+        with open('log.txt', 'a', encoding='utf-8') as f:
+            f.write(f'{output}\n')
         print(output)
     
     global current_web
     current_web = current_web + 1
-    print(f'Страница: {current_web}/{webs}')
+    if current_web > webs:
+        pass
+    else:
+        print(f'Страница: {current_web}/{webs}')
 
 def search(quantity_sites):
-    parser(0)
     for x in range(webs):
         quantity_sites = quantity_sites + 20
         parser(quantity_sites)
 
-input('''Бот, сканирующий обсуждение с анкетами и выводящий их в окно терминала. Вся работа с текстом осуществляется посредством горячего сочетания клавиш Ctrl+F (поиск регулярных выражений)
+# Основная часть бота #
+input('''Бот, сканирующий обсуждение с анкетами и выводящий их в окно терминала. Вся работа с текстом осуществляется в файле log.txt посредством сочетания клавиш Ctrl+F
 
 Нажмите Enter для запуска программы
 ''')
 print('\nЗапуск...')
-search(0)
+search(-20)
 input('\nСканирование закончено. Для поиска повторяющихся выражений используйте горячую клавишу Ctrl+F. Нажмите Enter чтобы закрыть терминал')

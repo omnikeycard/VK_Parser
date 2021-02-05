@@ -1,7 +1,8 @@
-# Парсер обсуждений для ВК, готовая версия
-
 from bs4 import BeautifulSoup
 import requests
+
+with open('log.txt', 'w') as f:
+    f.write(' ')
 
 forms_list = []
 authors_list = []
@@ -20,6 +21,9 @@ def parser(quantity_sites):
 
     for z in range(len(authors_list)):
         output = f'{authors_list[z]} - {forms_list[z]} \n'
+        f = open('log.txt', 'a', encoding='utf-8')
+        f.write(f'{output}\n')
+        f.close()
         print(output)
 
 def get_web():

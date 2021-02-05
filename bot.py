@@ -2,7 +2,7 @@ from bs4 import BeautifulSoup
 import requests
 
 with open('log.txt', 'w') as f:
-    f.write('Лог-лист пустой. Запустите программу bot.py для начала работы')
+    f.write(' ')
 
 forms_list = []
 authors_list = []
@@ -20,7 +20,7 @@ def parser(quantity_sites):
         authors_list.append(x.text)
 
     for z in range(len(authors_list)):
-        output = f'{authors_list[z]} - {forms_list[z]} \n'
+        output = f'{authors_list[z]} - {forms_list[z]}\n'
         f = open('log.txt', 'a', encoding='utf-8')
         f.write(f'{output}\n')
         f.close()
@@ -43,6 +43,6 @@ def search(quantity_sites):
 input('''Бот, сканирующий обсуждение с анкетами и выводящий их в окно терминала. Вся работа с текстом осуществляется посредством горячего сочетания клавиш Ctrl+F (поиск регулярных выражений)
 Нажмите Enter для запуска программы
 ''')
-print('Запуск...')
+print('\nЗапуск...')
 search(0)
 input('\nСканирование закончено. Для поиска повторяющихся выражений используйте горячую клавишу Ctrl+F. Нажмите Enter чтобы закрыть терминал')

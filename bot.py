@@ -8,8 +8,7 @@ forms_list = []
 authors_list = []
 
 def parser(quantity_sites):
-    site = f'https://vk.com/topic-201145305_46761521?offset={quantity_sites}'
-    content = requests.get(site).text
+    content = requests.get(f'https://vk.com/topic-201145305_46761521?offset={quantity_sites}').text
     soup = BeautifulSoup(content, "lxml")
     client_forms = soup.findAll('div', class_="pi_text") # Содержание анкеты
     author = soup.findAll('a', class_="pi_author") # Имя-фамилия автора
@@ -26,7 +25,7 @@ def parser(quantity_sites):
         f.close()
         print(output)
 
-def get_web():
+def get_web(): # получение кол-ва страниц у обсуждения 
     content = requests.get('https://vk.com/topic-201145305_46761521').text
     soup = BeautifulSoup(content, "html.parser")
     result = soup.findAll('a', class_="pg_link")

@@ -2,7 +2,8 @@ from bs4 import BeautifulSoup
 import requests
 
 with open('log.txt', 'w') as f:
-    f.write('Лог-лист пустой. Запустите программу bot.py чтобы для начала работы')
+    f.write('Лог-лист пустой. Запустите программу bot.py 
+для начала работы')
 
 forms_list = []
 authors_list = []

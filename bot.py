@@ -4,11 +4,12 @@ from bs4 import BeautifulSoup
 import requests
 
 with open('log.txt', 'w') as f:
-    f.write(' ')
+    f.write('')
 
 forms_list = []
 authors_list = []
-current_web = 0 
+current_web = 0
+quantity_sites = -20
 
 def get_web(): # получение кол-ва страниц у обсуждения 
     content = requests.get('https://vk.com/topic-201145305_46761521').text
@@ -24,6 +25,8 @@ def parser(quantity_sites):
     soup = BeautifulSoup(content, "lxml")
     client_forms = soup.findAll('div', class_="pi_text") # Содержание анкеты
     author = soup.findAll('a', class_="pi_author") # Имя-фамилия автора
+    forms_list.clear()
+    authors_list.clear()
     for x in client_forms:
         forms_list.append(x.text)
 
@@ -35,6 +38,8 @@ def parser(quantity_sites):
         with open('log.txt', 'a', encoding='utf-8') as f:
             f.write(f'{output}\n')
         print(output)
+    client_forms.clear()
+    author.clear()
     
     global current_web
     current_web = current_web + 1
@@ -43,16 +48,13 @@ def parser(quantity_sites):
     else:
         print(f'Страница: {current_web}/{webs}')
 
-def search(quantity_sites):
-    for x in range(webs):
-        quantity_sites = quantity_sites + 20
-        parser(quantity_sites)
-
 # Основная часть бота #
 input('''Бот, сканирующий обсуждение с анкетами и выводящий их в окно терминала. Вся работа с текстом осуществляется в файле log.txt посредством сочетания клавиш Ctrl+F
 
 Нажмите Enter для запуска программы
 ''')
 print('\nЗапуск...')
-search(-20)
+for x in range(webs):
+    quantity_sites = quantity_sites + 20
+    parser(quantity_sites)
 input('\nСканирование закончено. Для поиска повторяющихся выражений используйте горячую клавишу Ctrl+F. Нажмите Enter чтобы закрыть терминал')

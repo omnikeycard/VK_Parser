@@ -8,6 +8,7 @@ with open('log.txt', 'w') as f:
 
 forms_list = []
 authors_list = []
+hrefs_list = []
 current_web = 0
 quantity_sites = -20
 
@@ -21,25 +22,28 @@ def get_web(): # получение кол-ва страниц у обсужде
 webs = get_web()
 
 def parser(quantity_sites):
+
     content = requests.get(f'https://vk.com/topic-201145305_46761521?offset={quantity_sites}').text
     soup = BeautifulSoup(content, "lxml")
-    client_forms = soup.findAll('div', class_="pi_text") # Содержание анкеты
-    author = soup.findAll('a', class_="pi_author") # Имя-фамилия автора
+    first_forms = soup.findAll('div', class_="pi_text") # Содержание анкеты
+    first_authors = soup.findAll('a', class_="pi_author") # Имя-фамилия автора
     forms_list.clear()
     authors_list.clear()
-    for x in client_forms:
+    hrefs_list.clear()
+    for x in first_forms:
         forms_list.append(x.text)
 
-    for x in author:
+    for x in first_authors:
         authors_list.append(x.text)
-
+        hrefs_list.append(x.get('href')) # получение ссылки на страницу игрока
+    
     for z in range(len(authors_list)): # Основной цикл вывода данных на экран
-        output = f'{authors_list[z]} - {forms_list[z]}\n'
+        output = f'(vk.com{hrefs_list[z]}) {authors_list[z]} - {forms_list[z]}\n'
         with open('log.txt', 'a', encoding='utf-8') as f:
             f.write(f'{output}\n')
         print(output)
-    client_forms.clear()
-    author.clear()
+    first_forms.clear()
+    first_authors.clear()
     
     global current_web
     current_web = current_web + 1

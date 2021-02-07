@@ -2,6 +2,7 @@
 
 from bs4 import BeautifulSoup
 import requests
+import time
 
 with open('log.txt', 'w') as f:
     f.write('')
@@ -58,7 +59,12 @@ input('''Бот, сканирующий обсуждение с анкетами
 Нажмите Enter для запуска программы
 ''')
 print('\nЗапуск...')
+
+time_start = time.time()
 for x in range(webs):
     quantity_sites = quantity_sites + 20
     parser(quantity_sites)
+time_end = time.time()
+
+print(f'Времени затрачено: {int(time_end - time_start)} секунд(ы)')
 input('\nСканирование закончено. Для поиска повторяющихся выражений используйте горячую клавишу Ctrl+F. Нажмите Enter чтобы закрыть терминал')
